@@ -1379,6 +1379,11 @@ jobs:
           CONFIG_TMPFS_POSIX_ACL=y
           EOF
 
+          # KSU_DEBUG: 允许 ksud debug set-manager 动态指定 manager app
+          if [ "${{ inputs.ksu_mode }}" != "禁用KSU" ]; then
+            echo "CONFIG_KSU_DEBUG=y" >> "$DEFCONFIG"
+          fi
+
           # 禁用KSU 时源码里没有 KernelSU，CONFIG_KSU 不存在，写入会被 bazel 的 defconfig 检查拒绝
           if [ "${{ inputs.ksu_mode }}" != "禁用KSU" ]; then
             echo "CONFIG_KSU=y" >> "$DEFCONFIG"
